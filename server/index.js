@@ -15,6 +15,7 @@ app.get('/report', (req, res) => {
     axios.get(data_server_url)
         .then(response => {
             // convertir data-> xlsx
+
             return res.json(response.data)
         })
         .catch(error => res.sendStatus(500))
@@ -22,15 +23,13 @@ app.get('/report', (req, res) => {
 
 // guardar info
 app.post('/save-info', (req, res) => {
-    console.log(req.body)
     axios.post(data_server_url, req.body )
         .then(response => res.sendStatus(200))
         .catch(error => res.sendStatus(500))
 });
 
-// devuelve json con los datos en caché
+// devuelve json con los datos en caché o la image con el circulito de reporte
 app.get('/last-data', (req, res) => {
-    console.log('metod get')
     axios.get(data_server_url+'/last')
         .then(response => res.json(response.data))
         .catch(error => res.sendStatus(500))
