@@ -1,14 +1,24 @@
 const express = require('express')
 const app = express()
-const uploader = require('./uploader')
+//const uploader = require('./uploader')
 const fs = require('fs')
 const path = require('path')
-
 const port= process.env.PORT || 6000
 
 app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use(express.static('public'))
 
-//Uso publico de las imagenes http:.../nombredelarchivo.jpg|png|jpg
+app.post('/', (req,res)=>{
+    var base64Data = req.body.img.replace(/^data:image\/png;base64,/, '');
+    let name = `${new Date()}.png`
+    fs.writeFile('./public/' + name , base64Data, 'base64', (err) => {
+        if (err) res.sendStatus(500)
+        else res.json({path:name})
+    });
+})
+
+/*
 app.use('/', express.static('img'))
 
 app.post('/', uploader.single('image'),(req,res)=>{
@@ -17,10 +27,9 @@ app.post('/', uploader.single('image'),(req,res)=>{
     } catch (error) {
         res.sendStatus(400)
     }
-})
-
+})*/
 
 
 app.listen(port,()=>{
-    console.log(`Server running on port ${port}`)
+    console.log(`Image Server running on port ${port}`)
 })
