@@ -4,14 +4,14 @@ const uploader = require('./uploader')
 const fs = require('fs')
 const path = require('path')
 
-const port= process.env.PORT || 3001
+const port= process.env.PORT || 6000
 
 app.use(express.json())
 
 //Uso publico de las imagenes http:.../nombredelarchivo.jpg|png|jpg
 app.use('/', express.static('img'))
 
-app.post('/',uploader.single('image'),(req,res)=>{
+app.post('/', uploader.single('image'),(req,res)=>{
     try {
         res.send({path:req.file.path})
     } catch (error) {
