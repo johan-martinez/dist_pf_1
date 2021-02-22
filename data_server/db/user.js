@@ -3,7 +3,7 @@ const route = require('express').Router()
 
 // obtener todos datos
 route.get('/', async (req, res) => {
-    let result = await User.find({}, { '_id': 0, '__v': 0 })
+    let result = await User.find({city : req.query.city }, { '_id': 0, '__v': 0 })
     res.send(result)
 });
 
