@@ -1,19 +1,16 @@
 const express = require('express')
-const userDB = require('./db/user')
+const api = require('./api_rest')
 const cors = require('cors')
 const db = require('./db/connection')
-
-db()
 
 var app = express()
 var port = 4000
 
+db()
+
 app.use(express.json())
 app.use(cors())
-
-
-app.use('/db', userDB)
-
+app.use('/db', api)
 
 app.listen(port, ()=>{
     console.log(`ServerData is running on port ${port}`)
