@@ -9,8 +9,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
-var load_balancer = 'http://localhost'
-var img_server = 'http://localhost:6000'
+var load_balancer = process.env.LOAD_BALANCER || 'http://localhost'
+var img_server = process.env.IMG_SERVER || 'http://localhost:6000'
 
 app.post('/save', async (req, res) => {
     try {
