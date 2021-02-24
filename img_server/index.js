@@ -1,3 +1,4 @@
+const { Console } = require('console')
 const express = require('express')
 const app = express()
 //const uploader = require('./uploader')
@@ -9,13 +10,17 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
-app.post('/', (req,res)=>{
-    var base64Data = req.body.img.replace(/^data:image\/png;base64,/, '');
-    let name = `${new Date()}.png`
-    fs.writeFile('./public/' + name , base64Data, 'base64', (err) => {
-        if (err) res.sendStatus(500)
-        else res.json({path:name})
-    });
+app.post('/', async (req,res)=>{
+    var base64Data = req.body.img.replace(/^data:image\/jpeg;base64,/, '');
+    let date=new Date()
+    let name = `${date.toLocaleDateString()}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}.jpeg`
+    await fs.writeFileSync(path.join(__dirname,`public/${name}`), base64Data, 'base64', (err) => {
+        if (err) {
+            console.log(err)
+            res.sendStatus(500)
+        }
+    })
+    res.json({path:path.join(__dirname,`public/${name}`)})
 })
 
 /*
@@ -32,4 +37,7 @@ app.post('/', uploader.single('image'),(req,res)=>{
 
 app.listen(port,()=>{
     console.log(`Image Server running on port ${port}`)
+    if(!fs.existsSync(path.join(__dirname,'public'))){
+        fs.mkdirSync(path.join(__dirname,'public'))
+    }
 })
