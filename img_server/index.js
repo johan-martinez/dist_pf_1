@@ -12,8 +12,7 @@ app.use(express.static('public'))
 
 app.post('/', async (req,res)=>{
     var base64Data = req.body.img.replace(/^data:image\/jpeg;base64,/, '');
-    let date=new Date()
-    let name = `${date.toLocaleDateString()}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}.jpeg`
+    let name = `${Date.now()}.jpeg`
     await fs.writeFileSync(path.join(__dirname,`public/${name}`), base64Data, 'base64', (err) => {
         if (err) {
             console.log(err)
