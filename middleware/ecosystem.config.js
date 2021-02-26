@@ -9,7 +9,7 @@ module.exports = {
       watch: false,
       env: {
         NODE_ENV: 'development',
-        IMG_SERVER: 'http://localhost:6000',
+        IMG_SERVER: 'http://192.168.0.29:6000',
         LOAD_BALANCER: 'http://localhost'
       }
     }]
