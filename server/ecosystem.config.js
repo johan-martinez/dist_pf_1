@@ -9,7 +9,7 @@ module.exports = {
       watch: false,
       env: {
         NODE_ENV: 'development',
-        DATA_SERVER: 'http://localhost:4000/db'
+        DATA_SERVER: 'http://192.168.0.30:4000/db'
       }
     }]
   };
