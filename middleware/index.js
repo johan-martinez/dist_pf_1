@@ -2,6 +2,7 @@ const express = require('express')
 const axios = require('axios')
 const cors = require('cors')
 const fs = require('fs')
+const path = require('path');
 var app = express()
 var port = 3000
 
@@ -41,7 +42,7 @@ app.get('/report', (req, res) => {
         responseType: 'arraybuffer',
         headers: { 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
     }).then((result) => {
-        var outputFilename = 'reports/' + Date.now() + '_report_' + req.query.city + '.xlsx';
+        var outputFilename = path.join(__dirname,`reports/${Date.now()}_report_${req.query.city}.xlsx`) ;
         fs.writeFileSync(outputFilename, result.data)
         return res.download(outputFilename, (err) => {
             fs.unlinkSync(outputFilename)
@@ -52,4 +53,7 @@ app.get('/report', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Middleware is running on port ${port}`)
+    if(!fs.existsSync(path.join(__dirname,'reports'))){
+        fs.mkdirSync(path.join(__dirname,'reports'))
+    }
 });
