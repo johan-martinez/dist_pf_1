@@ -44,10 +44,10 @@ app.get('/report', (req, res) => {
     }).then((result) => {
         var outputFilename = path.join(__dirname,`reports/${Date.now()}_report_${req.query.city}.xlsx`) ;
         fs.writeFileSync(outputFilename, result.data)
-        return res.download(outputFilename, (err) => {
-            fs.unlinkSync(outputFilename)
+        await res.download(outputFilename, (err) => {
             if (err) res.sendStatus(500)
         });
+        fs.unlinkSync(outputFilename)
     }).catch((err) => res.sendStatus(500))
 })
 
