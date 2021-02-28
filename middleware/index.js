@@ -6,8 +6,8 @@ const path = require('path');
 var app = express()
 var port = 3000
 
-app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json({limit: '50mb', extended: true}));
+app.use(express.urlencoded({ limit: '50mb',extended: true }))
 app.use(cors())
 
 var load_balancer = process.env.LOAD_BALANCER || 'http://localhost'
