@@ -35,7 +35,7 @@ app.post('/save', async (req, res) => {
             .then(()=>{res.sendStatus(200)})
         })
         .catch(err=>{
-            logger.error(`[middle]:${err.messagge}`)
+            logger.error(`[middle]:${err.toString()}`)
             res.sendStatus(500)
         })
     
@@ -57,15 +57,14 @@ app.get('/report', async (req, res) => {
         responseType: 'arraybuffer',
         headers: { 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
     }).then(async (result) => {
-        console.log(result)
         var outputFilename = path.join(__dirname,`reports/${Date.now()}_report_${req.query.city}.xlsx`) ;
         fs.writeFileSync(outputFilename, result.data)
         await res.download(outputFilename, (err) => {
             if (err) res.sendStatus(500)
+            else fs.unlinkSync(outputFilename)
         });
-        fs.unlinkSync(outputFilename)
     }).catch(err=>{
-        logger.error(`[middle]:${err.messagge}`)
+        logger.error(`[middle]:${err.toString()}`)
         res.sendStatus(500)
     })
 })
