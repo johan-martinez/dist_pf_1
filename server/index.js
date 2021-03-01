@@ -23,7 +23,7 @@ app.get('/report', async (req, res) => {
         .then(async (response) => {
             var xls = json2xls(response.data);
             let nameFile = path.join(__dirname,`reports/${req.query.city}${Date.now()}.xlsx`)
-            fs.writeFileSync(nameFile, xls, 'binary');
+            await fs.writeFile(nameFile, xls, 'binary');
             await res.sendFile(nameFile, (err) => {
                 if (err) {
                     console.log(`err:`)
