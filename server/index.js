@@ -64,4 +64,7 @@ app.get('/last-data', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
+    if(!fs.existsSync(path.join(__dirname,'reports'))){
+        fs.mkdirSync(path.join(__dirname,'reports'))
+    }
 });
