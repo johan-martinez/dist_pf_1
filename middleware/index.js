@@ -37,13 +37,13 @@ app.get('/last-data', (req, res) => {
         .catch(error => res.sendStatus(500))
 })
 
-app.get('/report', (req, res) => {
+app.get('/report', async (req, res) => {
     axios({
         method: 'GET',
         url: load_balancer + '/report?city=' + req.query.city,
         responseType: 'arraybuffer',
         headers: { 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
-    }).then((result) => {
+    }).then(async (result) => {
         var outputFilename = path.join(__dirname,`reports/${Date.now()}_report_${req.query.city}.xlsx`) ;
         fs.writeFileSync(outputFilename, result.data)
         await res.download(outputFilename, (err) => {
