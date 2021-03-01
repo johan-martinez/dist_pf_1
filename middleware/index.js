@@ -6,6 +6,7 @@ const path = require('path')
 const bodyParser = require('body-parser');
 var app = express()
 var port = 3000
+const logger = require('./Logger');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -15,26 +16,38 @@ app.use(cors())
 var load_balancer = process.env.LOAD_BALANCER || 'http://localhost'
 var img_server = process.env.IMG_SERVER || 'http://localhost:6000'
 
+
+app.post('/log', (req,res)=>{
+    logger.error(`[${req.connection.remoteAddress}]:${req.body.msg}`)
+    res.send(200)
+})
+
 app.post('/save', async (req, res) => {
-    try {
-        let image_result = await axios.post(img_server, { img: req.body.img })
-        await axios.post(load_balancer + '/save-data/',
-            {
-                name: req.body.name,
-                city: req.body.city,
-                image_path: image_result.data.path
-            }
-        )
-        res.sendStatus(200)
-    } catch {
-        res.sendStatus(500)
-    }
+        axios.post(img_server, { img: req.body.img })
+        .then(()=>{
+            axios.post(load_balancer + '/save-data/',
+                {
+                    name: req.body.name,
+                    city: req.body.city,
+                    image_path: image_result.data.path
+                }
+            )
+            .then(()=>{res.sendStatus(200)})
+        })
+        .catch(err=>{
+            logger.error(`[middle]:${err.messagge}`)
+            res.sendStatus(500)
+        })
+    
 })
 
 app.get('/last-data', (req, res) => {
     axios.get(load_balancer + '/last-data/')
         .then(response => res.json(response.data))
-        .catch(error => res.sendStatus(500))
+        .catch(err=>{
+            logger.error(`[middle]:${err.messagge}`)
+            res.sendStatus(500)
+        })
 })
 
 app.get('/report', async (req, res) => {
@@ -50,7 +63,10 @@ app.get('/report', async (req, res) => {
             if (err) res.sendStatus(500)
         });
         fs.unlinkSync(outputFilename)
-    }).catch((err) => res.sendStatus(500))
+    }).catch(err=>{
+        logger.error(`[middle]:${err.messagge}`)
+        res.sendStatus(500)
+    })
 })
 
 app.listen(port, () => {
