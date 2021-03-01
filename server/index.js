@@ -26,12 +26,16 @@ app.get('/report', async (req, res) => {
             fs.writeFileSync(nameFile, xls, 'binary');
             await res.sendFile(nameFile, (err) => {
                 if (err) {
+                    console.log(`err:`)
+                    console.log(err)
                     sendError(err.message)
                     res.sendStatus(400)//enviar error
                 }
             })
             fs.unlinkSync(nameFile)
         }).catch(error => {
+                console.log(`error:`)
+                    console.log(error.message)
             sendError(error.message)
             res.sendStatus(400)
         })
