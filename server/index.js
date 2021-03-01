@@ -20,7 +20,7 @@ function sendError(msg){
 // obtener reporte xlsx
 app.get('/report', async (req, res) => {
     axios.get(data_server_url + '?city=' + req.query.city)
-        .then(response => {
+        .then(async (response) => {
             var xls = json2xls(response.data);
             let nameFile = path.join(__dirname,`reports/${req.query.city}${Date.now()}.xlsx`)
             fs.writeFileSync(nameFile, xls, 'binary');
