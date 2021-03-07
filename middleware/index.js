@@ -60,11 +60,11 @@ app.get('/report', async (req, res) => {
         var outputFilename = path.join(__dirname,`reports/${Date.now()}_report_${req.query.city}.xlsx`) ;
         fs.writeFileSync(outputFilename, result.data)
         await res.download(outputFilename, (err) => {
-            if (err) res.sendStatus(500)
+            if (err) throw err
             else fs.unlinkSync(outputFilename)
         });
     }).catch(err=>{
-        logger.error(`[middle]:${err.toString()}`)
+        logger.error(`[middle]:${err.messagge||err.toString()}`)
         res.sendStatus(500)
     })
 })

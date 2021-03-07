@@ -17,26 +17,47 @@ function sendError(msg){
     axios.post(`${middle_url}log`,{msg:msg})
 }
 
-// obtener reporte xlsx
-app.get('/report', async (req, res) => {
+app.get('/report', (req, res) => {
     axios.get(data_server_url + '?city=' + req.query.city)
-        .then(async (response) => {
+        .then(response => {
             var xls = json2xls(response.data);
             let nameFile = path.join(__dirname,`reports/${req.query.city}${Date.now()}.xlsx`)
-            await fs.writeFile(nameFile, xls, 'binary',()=>{});
-            res.sendFile(nameFile, (err) => {
-                if (err) {
-                    sendError(err.message)
-                    res.sendStatus(400)//enviar error
-                }else{
-                    fs.unlinkSync(nameFile)
-                }
+            fs.writeFileSync(nameFile, xls, 'binary');
+            return res.sendFile(nameFile, { root: __dirname }, (err) => {
+                if (err) throw err
+                fs.unlinkSync(nameFile)
             })
-        }).catch(error => {
-            sendError(error.message)
-            res.sendStatus(400)
         })
-});
+    .catch(error => {
+        sendError(error.message)
+        res.sendStatus(500)
+    })
+})
+
+
+// obtener reporte xlsx
+/**
+ * 
+ app.get('/report', async (req, res) => {
+     axios.get(data_server_url + '?city=' + req.query.city)
+         .then(async (response) => {
+             var xls = json2xls(response.data);
+             let nameFile = 
+             await fs.writeFile(nameFile, xls, 'binary',()=>{});
+             res.sendFile(nameFile, (err) => {
+                 if (err) {
+                     sendError(err.message)
+                     res.sendStatus(400)//enviar error
+                 }else{
+                     fs.unlinkSync(nameFile)
+                 }
+             })
+         }).catch(error => {
+             sendError(error.message)
+             res.sendStatus(400)
+         })
+ });
+ */
 
 // guardar info
 app.post('/save-data', (req, res) => {
