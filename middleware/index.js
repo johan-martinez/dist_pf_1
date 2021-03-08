@@ -24,7 +24,7 @@ app.post('/log', (req,res)=>{
 
 app.post('/save', async (req, res) => {
         axios.post(img_server, { img: req.body.img })
-        .then(()=>{
+        .then((image_result)=>{
             axios.post(load_balancer + '/save-data/',
                 {
                     name: req.body.name,
