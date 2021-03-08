@@ -1,7 +1,8 @@
 # Servidor con microservicios
 
 Este servidor realizado con nodejs se encarga de:
-- Generar reporte xlsx apartir de una ciudad dada
+
+- Generar reporte xlsx apartir de una ciudad dada.
 - Obtener los datos guardados en el servidor de datos manejando memoria ram.
 - Redireccionar la solicitud para guardar los datos (nombre, ciudad, y url de la foto)
 
@@ -28,18 +29,22 @@ Dentro de la carpeta /server/
 
 ```
 npm install
-pm2 start ecosystem.config.js
 ```
-
-El archivo `ecosystem.config.js` debe modificarlo ya que contiene las variables ENV como dirección del servidor de datos para poder consumir la información y del middleware para estar comunicando cualquier error.   
 
 ## Despliegue 📦
 
-Para poder desplegar el servidor debe tener corriendo el servidor de datos, luego puede pedir probar su comunicacion atraves de una peticion get al servidor.
+El archivo `ecosystem.config.js` debe modificarlo ya que contiene las variables ENV como dirección del servidor de datos para poder consumir la información y del middleware para estar comunicando cualquier error. 
 
-  http://ip_server:port/last-data
+Para poder desplegar el servidor debe tener corriendo el servidor de datos y luego puede iniciar el servidor.
 
-Asi obtendra los datos guardados en redis.
+```
+pm2 start ecosystem.config.js
+```
+Luego puede probar su comunicación através de una petición get al servidor.
+
+`http://ip_server:port/last-data`
+
+Asi obtendrá los datos guardados en redis.
 
 ## Construido con 🛠️
 
