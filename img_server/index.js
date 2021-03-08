@@ -1,14 +1,20 @@
 const { Console } = require('console')
 const express = require('express')
 const app = express()
-//const uploader = require('./uploader')
 const fs = require('fs')
 const path = require('path')
 const port= process.env.PORT || 6000
+const internalIp = require('internal-ip');
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
+
+let myIP=null
+getIp()
+async function getIp() {
+    myIP= await internalIp.v4()
+}
 
 app.post('/', async (req,res)=>{
     var base64Data = req.body.img.replace(/^data:image\/jpeg;base64,/, '');
@@ -19,20 +25,8 @@ app.post('/', async (req,res)=>{
             res.sendStatus(500)
         }
     })
-    res.json({path:path.join(__dirname,`public/${name}`)})
+    res.json({path:`http://${myIP||'192.168.0.29'}/${name}`})
 })
-
-/*
-app.use('/', express.static('img'))
-
-app.post('/', uploader.single('image'),(req,res)=>{
-    try {
-        res.send({path:req.file.path})
-    } catch (error) {
-        res.sendStatus(400)
-    }
-})*/
-
 
 app.listen(port,()=>{
     console.log(`Image Server running on port ${port}`)
