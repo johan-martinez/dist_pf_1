@@ -39,6 +39,10 @@ Antes de lanzar la aplicación debe tener en cuenta:
 - Modificar el archivo `db/connection.js` y poner la url de su cluster o en su defecto si instaló mongodb la ip y el puerto de lanzamiento. Más información [aquí](https://mongoosejs.com/docs/connections.html)   
 - Tener arriba los servicio de redis y mongo (si cambia el puerto de redir modifique el archivo `api_rest.js`)
  
+Luego puede correr el servicio, en este caso se utiliza pm2 para poder lanzarlo:
+```
+pm2 start index.js
+```
 Si genera una petición GET  a la url  `http://ip_server_data:port/db?city=TUNJA` obtendrá los registro de la ciudad de TUNJA en formato JSON.
  
 ## Construido con 🛠️
