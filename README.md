@@ -11,5 +11,5 @@ El presente proyecto se encarga de representar un sistema distribuido, con el fi
 - **data_server**: Se encarga de administrar y manejar los datos a través de un sistema de base de datos como mongo y redis. Redis es utilizado para el reporte especifico de cantidad de registros por ciudad, para una mayor rápidez.
 
 A continuación se presentará un breve diagrama para entender los niveles y la jerarquía de los proyectos presentados.
-
+![pf_1](https://user-images.githubusercontent.com/74377595/111054639-3068a280-843c-11eb-94aa-13ed12a15dc9.png)
 
