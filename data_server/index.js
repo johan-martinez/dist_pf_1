@@ -3,12 +3,12 @@ const api = require('./api_rest')
 const cors = require('cors')
 const db = require('./db/connection')
 
+var app = express()
+var port = 4000
+
 const promBundle = require("express-prom-bundle")
 const metricsMiddleware = promBundle({includeMethod: true});
 app.use(metricsMiddleware)
-
-var app = express()
-var port = 4000
 
 db()
 
