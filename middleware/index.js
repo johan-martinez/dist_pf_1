@@ -5,8 +5,12 @@ const fs = require('fs')
 const path = require('path')
 const bodyParser = require('body-parser');
 var app = express()
-var port = 3000
+var port = 3003
 const logger = require('./Logger');
+
+const promBundle = require("express-prom-bundle")
+const metricsMiddleware = promBundle({includeMethod: true});
+app.use(metricsMiddleware)
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));

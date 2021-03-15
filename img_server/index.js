@@ -1,10 +1,13 @@
-const { Console } = require('console')
 const express = require('express')
 const app = express()
 const fs = require('fs')
 const path = require('path')
 const port= process.env.PORT || 6000
 const internalIp = require('internal-ip');
+
+const promBundle = require("express-prom-bundle")
+const metricsMiddleware = promBundle({includeMethod: true});
+app.use(metricsMiddleware)
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -25,7 +28,7 @@ app.post('/', async (req,res)=>{
             res.sendStatus(500)
         }
     })
-    res.json({path:`http://${myIP||'192.168.0.29'}/${name}`})
+    res.json({path:`http://${myIP||'192.168.0.29'}:${port||6000}/${name}`})
 })
 
 app.listen(port,()=>{

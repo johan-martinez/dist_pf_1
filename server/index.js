@@ -10,6 +10,10 @@ var port = 5000
 var data_server_url = process.env.DATA_SERVER || 'http://localhost:4000/db'
 var middle_url = process.env.MIDDLEWARE || 'http://localhost:3000/'
 
+const promBundle = require("express-prom-bundle")
+const metricsMiddleware = promBundle({includeMethod: true});
+app.use(metricsMiddleware)
+
 app.use(cors())
 app.use(express.json())
 
@@ -34,30 +38,6 @@ app.get('/report', (req, res) => {
     })
 })
 
-
-// obtener reporte xlsx
-/**
- * 
- app.get('/report', async (req, res) => {
-     axios.get(data_server_url + '?city=' + req.query.city)
-         .then(async (response) => {
-             var xls = json2xls(response.data);
-             let nameFile = 
-             await fs.writeFile(nameFile, xls, 'binary',()=>{});
-             res.sendFile(nameFile, (err) => {
-                 if (err) {
-                     sendError(err.message)
-                     res.sendStatus(400)//enviar error
-                 }else{
-                     fs.unlinkSync(nameFile)
-                 }
-             })
-         }).catch(error => {
-             sendError(error.message)
-             res.sendStatus(400)
-         })
- });
- */
 
 // guardar info
 app.post('/save-data', (req, res) => {

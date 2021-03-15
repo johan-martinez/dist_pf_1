@@ -9,7 +9,7 @@ module.exports = {
       watch: false,
       env: {
         NODE_ENV: 'development',
-        MIDDLEWARE: 'http://192.168.0.25:3000/',
+        MIDDLEWARE: 'http://192.168.0.25:3003/',
         DATA_SERVER: 'http://192.168.0.30:4000/db'
       }
     }]
